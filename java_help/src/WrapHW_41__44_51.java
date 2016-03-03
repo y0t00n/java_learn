@@ -123,7 +123,7 @@ import java.util.Arrays;
 		System.out.println("\n\nManual Array:\n"+stringArray(arrM));
 		PrintDifferentArr(arrM);
 		
-		
+//first eclipse try comment		
 	}
 
 }
