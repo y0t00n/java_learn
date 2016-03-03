@@ -37,13 +37,14 @@
 
 import java.util.Random;
 import java.util.Scanner;
+//import java.util.Scanner;
 //43
-import java.util.Arrays;
+//41-4  import java.util.Arrays;
 //41 public class WrapHW_41__46_51 extends hw41arrSearchFirstBigger {
 //42	public class WrapHW_41__44_51 extends hw42arrSearchLastBigger {
 //43	public class WrapHW_41__44_51 extends hw43arrSortInsertFloat {
-//44
-	public class WrapHW_41__44_51 extends hw44arrPrintDifferent {
+//44	public class WrapHW_41__44_51 extends hw44arrPrintDifferent {
+public class WrapHW_41__44_51 extends Employee {
     public static int[] genIntArrayRand(int length, int low, int high) {
         int[] resArr = new int [length];
         Random rand = new Random();
@@ -54,6 +55,13 @@ import java.util.Arrays;
             resArr[i] = (int)(fraction + low);
          }
         return(resArr);
+    }
+    
+    public static int getRndIndex(int length){
+    	Random rand = new Random();
+    	int range = length;
+    	int fraction = 1 + (int)(range * rand.nextDouble());
+    	return fraction;
     }
     
     public static String stringArray(int[] arr) {
@@ -84,6 +92,85 @@ import java.util.Arrays;
 	/**
 	 * @param args
 	 */
+	
+	public static Employee[] getRandEmployeeArr(int n){
+		String [] names = {"John","Peter","Bill","Steave","Rick","Mike","Bigelow","Fizzwalts","Stephano","Rurik","Mistolz","Drevko","Zuban","Ivcheg","Sustronium","Abdzhek"};
+		String [] surnames = {"Phills","Doms","Carks","Dood","Jort","Smith","Shushpanz","Sigurdson","Facepalm","Kickass","Drooz","Figoolinakis","Hatanatori","Ozheg","Fintz-Grebovski","Apsa","Eetoo","Gzhebzhezhinski"};
+		Employee [] e = new Employee [n];
+		Scanner keyboard = new Scanner(System.in);
+		for (int i=0; i<n; i++){
+			long inn = 1000000000 + i; 
+			String name = names[getRndIndex(names.length-1)];
+			String surname = surnames[getRndIndex(surnames.length-1)];
+			float salary = getRndIndex(30) * 100;
+			e[i] = Employee.createEmployee(inn, name, surname, salary);
+		}
+		return(e);
+	}
+	
+	public static Employee[] getEmployeeArr(int n){
+		Employee [] e = new Employee [n];
+		Scanner keyboard = new Scanner(System.in);
+		for (int i=0; i<n; i++){
+			System.out.println("Enter INN (10 digits):");
+			Long inn = keyboard.nextLong();
+			System.out.println("Enter Name (String):");
+			String name = keyboard.next();
+			System.out.println("Enter Surname (String):");
+			String surname = keyboard.next();
+			System.out.println("Enter Salary (Float):");
+			float salary = keyboard.nextFloat();
+			e[i] = Employee.createEmployee(inn, name, surname, salary);
+		}
+		return(e);
+	}
+	
+	public static void printAllEmployeeArr(Employee [] e){
+		System.out.println("Entire List: ");
+		for (int i=0; i<e.length; i++){
+			System.out.println(e[i].toString());
+		}
+	}
+	
+	public static float getSumEmployeeSalary(Employee [] e){
+		float res = 0;
+		for (int i=0; i<e.length; i++){
+			res += e[i].getSalary();
+		}
+		return(res);
+	}
+	
+	public static int [] getWinnerLooserEmployeeIndexes(Employee [] e){
+		int [] res = new int [2];
+		float min = e[0].getSalary();
+		float max = e[0].getSalary();
+		for (int i=0; i<e.length; i++){
+			if (e[i].getSalary() > max) {
+				max = e[i].getSalary();
+				res[1] = i;
+			}
+			if (e[i].getSalary() < min) {
+				min = e[i].getSalary();
+				res[0] = i;
+			}
+		}
+		return(res);
+	}
+	
+	public static void printWinnerEmployee(Employee [] e){
+		int index = getWinnerLooserEmployeeIndexes(e)[1];
+		System.out.println("\nThe WINNER: " + e[index]);
+	}
+	
+	public static void printLooserEmployee(Employee [] e){
+		int index = getWinnerLooserEmployeeIndexes(e)[0];
+		System.out.println("\nThe looser: " + e[index]);
+	}
+	
+	public static void printSumEmployeeSalary(float sum){
+		System.out.println("\nSalary total : " + sum);
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 //		Scanner keyboard = new Scanner(System.in);
@@ -94,9 +181,9 @@ import java.util.Arrays;
 //		System.out.println("Enter side C:");
 //		float c = keyboard.nextFloat();
 
-		int[] arr = genIntArrayRand(10, 1,100);
-		Arrays.sort(arr);
-		System.out.println("\nArray:\n"+stringArray(arr));
+//41-4		int[] arr = genIntArrayRand(10, 1,100);
+//41-4		Arrays.sort(arr);
+//41-4		System.out.println("\nArray:\n"+stringArray(arr));
 		
 //414243	Scanner keyboard = new Scanner(System.in);
 //4142		System.out.println("Enter K to check:");
@@ -115,13 +202,19 @@ import java.util.Arrays;
 //4142			System.out.println("Element Nr " + searchRes[i][0] + " is " + searchRes[i][1] + " > " + k);
 //4142			i++;
 //4142		}
-//44
-		PrintDifferentArr(arr);
-		int [] arrM = new int[] {1,1,1,1,2,2,2,2,2,2};
-		System.out.println("\n\nManual Array:\n"+stringArray(arrM));
-		PrintDifferentArr(arrM);
+//44		PrintDifferentArr(arr);
+//44		int [] arrM = new int[] {1,1,1,1,2,2,2,2,2,2};
+//44		System.out.println("\n\nManual Array:\n"+stringArray(arrM));
+//44		PrintDifferentArr(arrM);
 		
-//first eclipse try comment		
+		//Employee [] employees = getEmployeeArr(10);
+		Employee [] employees = getRandEmployeeArr(15);
+		printAllEmployeeArr(employees);
+		printSumEmployeeSalary(getSumEmployeeSalary(employees));
+		printWinnerEmployee(employees);
+		printLooserEmployee(employees);
+		
+		
 	}
 
 }
