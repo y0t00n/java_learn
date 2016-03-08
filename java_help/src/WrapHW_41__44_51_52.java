@@ -40,11 +40,11 @@ import java.util.Scanner;
 //import java.util.Scanner;
 //43
 //41-4  import java.util.Arrays;
-//41 public class WrapHW_41__46_51 extends hw41arrSearchFirstBigger {
-//42	public class WrapHW_41__44_51 extends hw42arrSearchLastBigger {
-//43	public class WrapHW_41__44_51 extends hw43arrSortInsertFloat {
-//44	public class WrapHW_41__44_51 extends hw44arrPrintDifferent {
-public class WrapHW_41__44_51 extends Employee {
+//41 public class WrapHW_41__44_51_52 extends hw41arrSearchFirstBigger {
+//42	public class WrapHW_41__44_51_52 extends hw42arrSearchLastBigger {
+//43	public class WrapHW_41__44_51_52 extends hw43arrSortInsertFloat {
+//44	public class WrapHW_41__44_51_52 extends hw44arrPrintDifferent {
+public class WrapHW_41__44_51_52 {
     public static int[] genIntArrayRand(int length, int low, int high) {
         int[] resArr = new int [length];
         Random rand = new Random();
@@ -96,14 +96,23 @@ public class WrapHW_41__44_51 extends Employee {
 	public static Employee[] getRandEmployeeArr(int n){
 		String [] names = {"John","Peter","Bill","Steave","Rick","Mike","Bigelow","Fizzwalts","Stephano","Rurik","Mistolz","Drevko","Zuban","Ivcheg","Sustronium","Abdzhek"};
 		String [] surnames = {"Phills","Doms","Carks","Dood","Jort","Smith","Shushpanz","Sigurdson","Facepalm","Kickass","Drooz","Figoolinakis","Hatanatori","Ozheg","Fintz-Grebovski","Apsa","Eetoo","Gzhebzhezhinski"};
+		Random rand = new Random();
+		int prob;
 		Employee [] e = new Employee [n];
 		Scanner keyboard = new Scanner(System.in);
 		for (int i=0; i<n; i++){
+			prob = rand.nextInt(100);
 			long inn = 1000000000 + i; 
 			String name = names[getRndIndex(names.length-1)];
 			String surname = surnames[getRndIndex(surnames.length-1)];
 			float salary = getRndIndex(30) * 100;
-			e[i] = Employee.createEmployee(inn, name, surname, salary);
+			if (prob < 80){
+				e[i] = Employee.createEmployee(inn, name, surname, salary);
+			} else {
+				float bonus = rand.nextFloat()*50;
+				salary = 900 + getRndIndex(20) * 100;
+				e[i] = Manager.createManager(inn, name, surname, salary, bonus);
+			}
 		}
 		return(e);
 	}
