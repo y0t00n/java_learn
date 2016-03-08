@@ -105,12 +105,12 @@ public class WrapHW_41__44_51_52 {
 			long inn = 1000000000 + i; 
 			String name = names[getRndIndex(names.length-1)];
 			String surname = surnames[getRndIndex(surnames.length-1)];
-			float salary = getRndIndex(30) * 100;
+			float salary = 500 + getRndIndex(25) * 100;
 			if (prob < 80){
 				e[i] = Employee.createEmployee(inn, name, surname, salary);
 			} else {
 				float bonus = rand.nextFloat()*50;
-				salary = 900 + getRndIndex(20) * 100;
+				salary = 900 + getRndIndex(30) * 100;
 				e[i] = Manager.createManager(inn, name, surname, salary, bonus);
 			}
 		}
@@ -217,12 +217,25 @@ public class WrapHW_41__44_51_52 {
 //44		PrintDifferentArr(arrM);
 		
 		//Employee [] employees = getEmployeeArr(10);
-		Employee [] employees = getRandEmployeeArr(15);
+		Employee [] employees = Employee.sortEmployeesByName(getRandEmployeeArr(15));
 		printAllEmployeeArr(employees);
+
+//		System.out.print("\nSorted by Name - > ");
+//		Employee [] eSbN = Employee.sortEmployeesByName(employees);
+//		printAllEmployeeArr(eSbN);
+		
+		System.out.print("\nSorted by INN - > ");
+		Employee [] eSbI = Employee.sortEmployeesByINN(employees);
+		printAllEmployeeArr(eSbI);
+		
+		System.out.print("\nSorted by Salary - > ");
+		Employee [] eSbS = Employee.sortEmployeesBySalary(employees);
+		printAllEmployeeArr(eSbS);
+		
 		printSumEmployeeSalary(getSumEmployeeSalary(employees));
 		printWinnerEmployee(employees);
 		printLooserEmployee(employees);
-		
+
 		
 	}
 
