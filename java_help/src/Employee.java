@@ -1,11 +1,21 @@
 //Note: Класс Employee должен содержать следующую информацию о сотруднике - 
 //INN, Name, Surname, Salary 
-import java.util.stream.IntStream;
-public class Employee {
+import java.util.Arrays;
+import java.util.Comparator; //http://www.digizol.com/2008/07/java-sorting-comparator-vs-comparable.html
+//import java.util.stream.IntStream;
+public class Employee implements Comparable<Employee>, Comparator<Employee>{
 	protected long INN;
 	protected String Name;
 	protected String Surname;
 	protected Float Salary;
+	
+	public int compareTo(Employee o) { 
+		return (this.getName() + " " + this.getSurname()).compareTo(o.getName() + " " + o.getSurname()); 
+	}
+	
+	public int compare(Employee o1, Employee o2) {
+		return (o1.getName() + " " + o1.getSurname()).compareTo(o2.getName() + " " + o2.getSurname()); 
+	}
 	
 	public long getINN(){
 		return(this.INN);
@@ -60,43 +70,45 @@ public class Employee {
 	
 	public static Employee[] sortEmployeesByINN(Employee [] input){
 		Employee [] res = new Employee[input.length];
-		long max = input[0].getINN();
-		int ind,maxInd;
-		maxInd=0;
-		for(int i = 0; i<input.length; i++){
-			if (input[i].getINN()>= max){ 
-				max = input[i].getINN(); 
-				maxInd = i;
-			}
-		}
-		int resI=0;
-		// an array for sorted indexes match pattern
-		int [] doneIndexes = new int[input.length];
-		// to avoid faulty usage of index 0 - fill array with -1 
-		for (int i = 0; i < input.length; i++){
-			doneIndexes[i]=-1;
-		}
-		boolean indexed;
-		long min;
-		while(resI < input.length){
-			min = max; // worst min value for check
-			ind = maxInd;
-			for (int i = 0; i < input.length; i++){
-				int curIndex = i;
-				//check if this index has already been indexed
-				indexed = IntStream.of(doneIndexes).anyMatch(x -> x == curIndex);
-				if (!indexed){
-					if (input[i].getINN() <= min){
-						ind = i;
-						min = input[i].getINN();
-					}
-				}
-			}
-			// add current minIndex to array of indexes - sorted match pattern
-			doneIndexes[resI] = ind;
-			res[resI] = input[ind]; // copy from input to res according to matching pattern
-			resI++;
-		}
+		System.arraycopy( input, 0, res, 0, input.length );
+//		long max = input[0].getINN();
+//		int ind,maxInd;
+//		maxInd=0;
+//		for(int i = 0; i<input.length; i++){
+//			if (input[i].getINN()>= max){ 
+//				max = input[i].getINN(); 
+//				maxInd = i;
+//			}
+//		}
+//		int resI=0;
+//		// an array for sorted indexes match pattern
+//		int [] doneIndexes = new int[input.length];
+//		// to avoid faulty usage of index 0 - fill array with -1 
+//		for (int i = 0; i < input.length; i++){
+//			doneIndexes[i]=-1;
+//		}
+//		boolean indexed;
+//		long min;
+//		while(resI < input.length){
+//			min = max; // worst min value for check
+//			ind = maxInd;
+//			for (int i = 0; i < input.length; i++){
+//				int curIndex = i;
+//				//check if this index has already been indexed
+//				indexed = IntStream.of(doneIndexes).anyMatch(x -> x == curIndex);
+//				if (!indexed){
+//					if (input[i].getINN() <= min){
+//						ind = i;
+//						min = input[i].getINN();
+//					}
+//				}
+//			}
+//			// add current minIndex to array of indexes - sorted match pattern
+//			doneIndexes[resI] = ind;
+//			res[resI] = input[ind]; // copy from input to res according to matching pattern
+//			resI++;
+//		}
+		Arrays.sort(res, new EmpSortByINN());
 		return res;
 	}
 	
@@ -106,90 +118,94 @@ public class Employee {
 	public static Employee[] sortEmployeesByName(Employee [] input){
 		// get the max name and its index
 		Employee [] res = new Employee[input.length];
-		String max = input[0].getName() + " " + input[0].getSurname();
-		int ind,maxInd;
-		maxInd=0;
-		for(int i = 0; i<input.length; i++){
-			if ((input[i].getName() + " " + input[i].getSurname()).compareTo(max) >= 0){ 
-				max = input[i].getName() + " " + input[i].getSurname(); 
-				maxInd = i;
-			}
-		}
-		int resI=0;
-		// an array for sorted indexes match pattern
-		int [] doneIndexes = new int[input.length];
-		// to avoid faulty usage of index 0 - fill array with -1 
-		for (int i = 0; i < input.length; i++){
-			doneIndexes[i]=-1;
-		}
-		boolean indexed;
-		String min;
-		// go through input array "length" times to to get min value excluding previous min every iteration 
-		while(resI < input.length){
-			min = max; // worst min value for check
-			ind = maxInd;
-			for (int i = 0; i < input.length; i++){
-				int curIndex = i;
-				//check if this index has already been indexed
-				indexed = IntStream.of(doneIndexes).anyMatch(x -> x == curIndex);
-				if (!indexed){
-					if (((input[i].getName() + " " + input[i].getSurname()).compareTo(min) <= 0)){
-						ind = i;
-						min = input[i].getName() + " " + input[i].getSurname();
-					}
-				}
-			}
-			// add current minIndex to array of indexes - sorted match pattern
-			doneIndexes[resI] = ind;
-			res[resI] = input[ind]; // copy from input to res according to matching pattern
-			resI++;
-		}
-		//:OBSOLETE: copy input to res by sorted match pattern
+		System.arraycopy( input, 0, res, 0, input.length );
+//		String max = input[0].getName() + " " + input[0].getSurname();
+//		int ind,maxInd;
+//		maxInd=0;
 //		for(int i = 0; i<input.length; i++){
-//			res[i] = input[doneIndexes[i]];
+//			if ((input[i].getName() + " " + input[i].getSurname()).compareTo(max) >= 0){ 
+//				max = input[i].getName() + " " + input[i].getSurname(); 
+//				maxInd = i;
+//			}
 //		}
-		return res;
+//		int resI=0;
+//		// an array for sorted indexes match pattern
+//		int [] doneIndexes = new int[input.length];
+//		// to avoid faulty usage of index 0 - fill array with -1 
+//		for (int i = 0; i < input.length; i++){
+//			doneIndexes[i]=-1;
+//		}
+//		boolean indexed;
+//		String min;
+//		// go through input array "length" times to to get min value excluding previous min every iteration 
+//		while(resI < input.length){
+//			min = max; // worst min value for check
+//			ind = maxInd;
+//			for (int i = 0; i < input.length; i++){
+//				int curIndex = i;
+//				//check if this index has already been indexed
+//				indexed = IntStream.of(doneIndexes).anyMatch(x -> x == curIndex);
+//				if (!indexed){
+//					if (((input[i].getName() + " " + input[i].getSurname()).compareTo(min) <= 0)){
+//						ind = i;
+//						min = input[i].getName() + " " + input[i].getSurname();
+//					}
+//				}
+//			}
+//			// add current minIndex to array of indexes - sorted match pattern
+//			doneIndexes[resI] = ind;
+//			res[resI] = input[ind]; // copy from input to res according to matching pattern
+//			resI++;
+//		}
+//		//:OBSOLETE: copy input to res by sorted match pattern
+////		for(int i = 0; i<input.length; i++){
+////			res[i] = input[doneIndexes[i]];
+////		}
+		Arrays.sort(res);
+		return(res);
 	}
 
 	public static Employee[] sortEmployeesBySalary(Employee [] input){
 		Employee [] res = new Employee[input.length];
-		float max = input[0].getSalary();
-		int ind,maxInd;
-		maxInd=0;
-		for(int i = 0; i<input.length; i++){
-			if (input[i].getSalary()>= max){ 
-				max = input[i].getSalary(); 
-				maxInd = i;
-			}
-		}
-		int resI=0;
-		// an array for sorted indexes match pattern
-		int [] doneIndexes = new int[input.length];
-		// to avoid faulty usage of index 0 - fill array with -1 
-		for (int i = 0; i < input.length; i++){
-			doneIndexes[i]=-1;
-		}
-		boolean indexed;
-		float min;
-		while(resI < input.length){
-			min = max; // worst min value for check
-			ind = maxInd;
-			for (int i = 0; i < input.length; i++){
-				int curIndex = i;
-				//check if this index has already been indexed
-				indexed = IntStream.of(doneIndexes).anyMatch(x -> x == curIndex);
-				if (!indexed){
-					if (input[i].getSalary() <= min){
-						ind = i;
-						min = input[i].getSalary();
-					}
-				}
-			}
-			// add current minIndex to array of indexes - sorted match pattern
-			doneIndexes[resI] = ind;
-			res[resI] = input[ind]; // copy from input to res according to matching pattern
-			resI++;
-		}
+		System.arraycopy( input, 0, res, 0, input.length );
+//		float max = input[0].getSalary();
+//		int ind,maxInd;
+//		maxInd=0;
+//		for(int i = 0; i<input.length; i++){
+//			if (input[i].getSalary()>= max){ 
+//				max = input[i].getSalary(); 
+//				maxInd = i;
+//			}
+//		}
+//		int resI=0;
+//		// an array for sorted indexes match pattern
+//		int [] doneIndexes = new int[input.length];
+//		// to avoid faulty usage of index 0 - fill array with -1 
+//		for (int i = 0; i < input.length; i++){
+//			doneIndexes[i]=-1;
+//		}
+//		boolean indexed;
+//		float min;
+//		while(resI < input.length){
+//			min = max; // worst min value for check
+//			ind = maxInd;
+//			for (int i = 0; i < input.length; i++){
+//				int curIndex = i;
+//				//check if this index has already been indexed
+//				indexed = IntStream.of(doneIndexes).anyMatch(x -> x == curIndex);
+//				if (!indexed){
+//					if (input[i].getSalary() <= min){
+//						ind = i;
+//						min = input[i].getSalary();
+//					}
+//				}
+//			}
+//			// add current minIndex to array of indexes - sorted match pattern
+//			doneIndexes[resI] = ind;
+//			res[resI] = input[ind]; // copy from input to res according to matching pattern
+//			resI++;
+//		}
+		Arrays.sort(res, new EmpSortBySalary());
 		return res;
 	}
 }

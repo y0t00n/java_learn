@@ -99,7 +99,7 @@ public class WrapHW_41__44_51_52 {
 		Random rand = new Random();
 		int prob;
 		Employee [] e = new Employee [n];
-		Scanner keyboard = new Scanner(System.in);
+//		Scanner keyboard = new Scanner(System.in);
 		for (int i=0; i<n; i++){
 			prob = rand.nextInt(100);
 			long inn = 1000000000 + i; 
@@ -131,6 +131,7 @@ public class WrapHW_41__44_51_52 {
 			float salary = keyboard.nextFloat();
 			e[i] = Employee.createEmployee(inn, name, surname, salary);
 		}
+		keyboard.close();
 		return(e);
 	}
 	
