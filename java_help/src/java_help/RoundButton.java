@@ -1,74 +1,46 @@
 package java_help;
-import java.awt.*;
-import java.awt.geom.*;
+
 import javax.swing.*;
+import java.awt.Color;
+import java.io.IOException;
 
 public class RoundButton extends JButton {
-  public RoundButton(String label) {
-    super(label);
-
-// These statements enlarge the button so that it 
-// becomes a circle rather than an oval.
-    Dimension size = getPreferredSize();
-    size.width = size.height = Math.max(size.width, 
-      size.height);
-    setPreferredSize(size);
-
-// This call causes the JButton not to paint 
-   // the background.
-// This allows us to paint a round background.
-    setContentAreaFilled(false);
-  }
-
-// Paint the round background and label.
-  protected void paintComponent(Graphics g) {
-    if (getModel().isArmed()) {
-// You might want to make the highlight color 
-   // a property of the RoundButton class.
-      g.setColor(Color.lightGray);
-    } else {
-      g.setColor(getBackground());
-    }
-    g.fillOval(0, 0, getSize().width-1, 
-      getSize().height-1);
-
-// This call will paint the label and the 
-   // focus rectangle.
-    super.paintComponent(g);
-  }
-
-// Paint the border of the button using a simple stroke.
-  protected void paintBorder(Graphics g) {
-    g.setColor(Color.gray);
-    g.drawOval(0, 0, getSize().width-1, 
-      getSize().height-1);
-  }
-
-// Hit detection.
-  Shape shape;
-  public boolean contains(int x, int y) {
-// If the button has changed size, 
-   // make a new shape object.
-    if (shape == null || 
-      !shape.getBounds().equals(getBounds())) {
-      shape = new Ellipse2D.Float(0, 0, 
-        getWidth(), getHeight());
-    }
-    return shape.contains(x, y);
+  
+  public static RoundButton CreateRoundButton(String idle, String pressed, String hover, int width, int height){
+	  	ImageIcon icon = new ImageIcon(idle);
+	    ImageIcon pressedIcon = new ImageIcon(pressed);
+	    ImageIcon hoverIcon = new ImageIcon(hover);
+	    
+	    RoundButton btn = new RoundButton();
+	
+	    btn.setOpaque(false);
+	    btn.setContentAreaFilled(false);
+	    btn.setBorderPainted(false);
+	    btn.setFocusPainted(false);
+	    btn.setSize(width, height);
+	    
+	    btn.setIcon(icon);
+	    btn.setPressedIcon(pressedIcon);	
+	    btn.setRolloverIcon(hoverIcon);
+	    
+	    return(btn);
   }
 
 // Test routine.
-  public static void main(String[] args) {
-// Create a button with the label "Jackpot".
-    JButton button = new RoundButton("Press Me");
-    button.setBackground(Color.white);
+	public static void main(String[] args) throws IOException {
 
-// Create a frame in which to show the button.
-    JFrame frame = new JFrame();
-    frame.getContentPane().setBackground(Color.white);
-    frame.getContentPane().add(button);
-    frame.getContentPane().setLayout(new FlowLayout());
-    frame.setSize(150, 150);
-    frame.setVisible(true);
-  }
+		  JFrame frame = new JFrame("Swing Test");
+			frame.setVisible(true);
+			frame.setSize(500, 500);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    frame.getContentPane().setBackground(Color.white);
+		    
+		    String idle = "src/red_round_button.jpg";
+		    String pressed = "src/grey_round_button.jpg";
+		    String hover = "src/light_red_round_button.jpg";
+		    
+		    RoundButton btn = RoundButton.CreateRoundButton(idle, pressed, hover, 100, 100);
+		    
+		    frame.add(btn);
+	}
 }
